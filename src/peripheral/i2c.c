@@ -36,3 +36,4 @@ uint8_t waitTransferComplete(uint8_t dataDirection)
     }
     return 0;
 }
+

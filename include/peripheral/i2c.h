@@ -1,5 +1,5 @@
-#ifndef _STM8_I2C_H
-#define _STM8_I2C_H
+#ifndef INC_8_BIT_RADIO_I2C_H
+#define INC_8_BIT_RADIO_I2C_H
 
 #include "stm8.h"
 
@@ -182,4 +182,4 @@ typedef struct
 uint8_t checkI2CEvent(uint16_t event);
 uint8_t waitTransferComplete(uint8_t dataDirection);
 
-#endif
+#endif // INC_8_BIT_RADIO_I2C_H

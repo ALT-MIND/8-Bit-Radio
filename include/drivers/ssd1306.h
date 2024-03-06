@@ -24,6 +24,7 @@
 #define SET_CHARGE_PUMP 0x8D
 
 uint8_t sendCMD(uint8_t cmd);
+uint8_t sendFramebuffer(const uint8_t data[], uint16_t length);
 int initScreen();   
 
 #endif // INC_8_BIT_RADIO_OLED_DRIVER_H

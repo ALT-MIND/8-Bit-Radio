@@ -5,8 +5,6 @@
 #ifndef _STM8_H
 #define _STM8_H
 
-void uart_write(const char *str);
-
 typedef signed char int8_t;
 typedef signed short int16_t;
 typedef signed long int32_t;
@@ -33,6 +31,9 @@ typedef unsigned long uint32_t;
 
 /* Clock */
 #define CLK_CKDIVR *(volatile unsigned char *)0x50C6
+#define CLK_PCKENR1 *(volatile unsigned char *)0x50C7
+#define CLK_PCKENR2 *(volatile unsigned char *)0x50CA
+
 
 /* GPIO */
 
@@ -517,8 +518,6 @@ typedef struct
 /* Interrupt numbers */
 #define TIM1_OVR_UIF_IRQ 11
 #define TIM2_OVR_UIF_IRQ 13
-#define TIM3_OVR_UIF_IRQ 15
-#define ADC1_EOC_IRQ 22
 #define TIM4_OVR_UIF_IRQ 23
 /*
 Interrupts:

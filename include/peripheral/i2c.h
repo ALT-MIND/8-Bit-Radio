@@ -3,6 +3,14 @@
 
 #include "stm8.h"
 
+typedef enum i2c_error_t{
+    SUCCESS = 0,
+    TRANSMISSION_ERROR,
+    RECEIVING_ERROR,
+    ADDRESS_NACK,
+    DATA_NACK
+} I2C_ERROR;
+
 typedef struct
 {
     union
@@ -55,16 +63,16 @@ typedef struct
     {
         struct
         {
-            uint8_t _RESERVED : 1;
+            uint8_t : 1;
             uint8_t ADD : 2;
-            const uint8_t _RESERVED_2 : 3;
+            uint8_t : 3;
             uint8_t ADDCONF : 1;
             uint8_t ADDMODE : 1;
         };
         uint8_t registerValue;
     } OARH;
 
-    const uint8_t _RESERVED;
+    uint8_t;
     uint8_t DR;
 
     union

@@ -47,35 +47,58 @@ const uint8_t prepareFBLoad[] = {
     3,
 };
 
-uint8_t sendCMD(uint8_t cmd)
+I2C_ERROR sendCMD(uint8_t cmd)
 {
-    uint8_t p1, p2;
     SEND_DATE(0x80);
     while ((FLAG_STATE(I2C_SR1, 0x80) == 0))
     {
     }
-    p1 = FLAG_STATE(I2C_SR2, I2C_SLAVE_ACK_FAILURE);
+    if (FLAG_STATE(I2C_SR2, I2C_SLAVE_ACK_FAILURE))
+        return DATA_NACK;
     SEND_DATE(cmd);
     while ((FLAG_STATE(I2C_SR1, 0x80) == 0))
     {
     }
-    p2 = FLAG_STATE(I2C_SR2, I2C_SLAVE_ACK_FAILURE);
-    return p1 && p2;
+    if (FLAG_STATE(I2C_SR2, I2C_SLAVE_ACK_FAILURE))
+        return DATA_NACK;
+    return SUCCESS;
 }
 
-uint8_t sendFramebuffer(const uint8_t data[], uint16_t length)
+I2C_ERROR sendFramebuffer(const uint8_t data[], uint16_t length)
 {
+    I2C_ERROR operationStasus = SUCCESS;
+
+    GEN_START;
+
+    while (!checkI2CEvent(I2C_EVENT_MASTER_MODE_SELECT))
+        ;
+    SEND_7BIT_ADDRESS(SSD1306_I2C_ADDRESS, DIRECTION_TX);
+    while ((FLAG_STATE(I2C_SR1, 0x80) == 0))
+        if (waitTransferComplete(DIRECTION_TX))
+        {
+            operationStasus = ADDRESS_NACK;
+            goto Finish;
+        }
+
     for (uint8_t i = 0; i < 6; i++)
     {
         if (sendCMD(prepareFBLoad[i]))
-            return 1;
+        {
+            operationStasus = DATA_NACK;
+            goto Finish;
+        }
     }
+
     SEND_DATE(0x40);
+
     while (I2C->SR1.TXE == 0)
     {
     }
     if (I2C->SR2.AF == 1)
-        return 1;
+    {
+        operationStasus = DATA_NACK;
+        goto Finish;
+    }
 
     for (int i = 0; i < length; ++i)
     {
@@ -84,19 +107,40 @@ uint8_t sendFramebuffer(const uint8_t data[], uint16_t length)
         {
         }
         if (FLAG_STATE(I2C_SR2, I2C_SLAVE_ACK_FAILURE))
-            return 1;
-    }
-    return 0;
-}
-
-uint8_t initScreen()
-{
-    for (int i = 0; i < 27; ++i)
-    {
-        if (sendCMD(commands[i]))
         {
-            return 1;
+            operationStasus = DATA_NACK;
+            break;
         }
     }
-    return 0;
+
+Finish:
+    GEN_STOP;
+    return operationStasus;
+}
+
+I2C_ERROR initScreen()
+{
+    I2C_ERROR operationStasus = SUCCESS;
+    GEN_START;
+
+    while (!checkI2CEvent(I2C_EVENT_MASTER_MODE_SELECT))
+        ;
+    SEND_7BIT_ADDRESS(SSD1306_I2C_ADDRESS, DIRECTION_TX);
+    while ((FLAG_STATE(I2C_SR1, 0x80) == 0))
+        if (waitTransferComplete(DIRECTION_TX))
+        {
+            operationStasus = ADDRESS_NACK;
+            goto Finish;
+        }
+
+    for (int i = 0; i < 27; ++i)
+    {
+        operationStasus = sendCMD(commands[i]);
+        if (operationStasus != SUCCESS)
+            break;
+    }
+
+Finish:
+    GEN_STOP;
+    return operationStasus;
 }

@@ -2,6 +2,8 @@
 #define INC_8_BIT_RADIO_OLED_DRIVER_H
 
 #include "peripheral/i2c.h"
+#define SSD1306_I2C_ADDRESS 0x3C
+
 
 #define SET_CONTRAST 0x81
 #define SET_ENTIRE_ON 0xA4
@@ -23,8 +25,8 @@
 #define SET_VCOM_DESEL 0xDB
 #define SET_CHARGE_PUMP 0x8D
 
-uint8_t sendCMD(uint8_t cmd);
-uint8_t sendFramebuffer(const uint8_t data[], uint16_t length);
-int initScreen();   
+I2C_ERROR sendCMD(uint8_t cmd);
+I2C_ERROR sendFramebuffer(const uint8_t data[], uint16_t length);
+I2C_ERROR initScreen();   
 
 #endif // INC_8_BIT_RADIO_OLED_DRIVER_H

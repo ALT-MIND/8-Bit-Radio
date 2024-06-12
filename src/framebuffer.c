@@ -26,6 +26,42 @@ void fbText(uint8_t framebuffer[], uint8_t x, uint8_t y, char *text)
     }
 }
 
+void fbINum(uint8_t framebuffer[], uint8_t x, uint8_t y, uint16_t num)
+{
+    char buf[5];
+    char resultBuf[6];
+
+    uint8_t i = 4;
+    uint8_t j = 0;
+
+    if (num == 0){
+        fbText(framebuffer, x, y, "0");
+        return;
+    }
+
+    while (num > 0){
+        if (num >= 10) buf[i] = (char)(48 + num % 10);
+        else{
+            buf[i] = (char)(48 + num);
+            break;
+        };
+        num /= 10;
+        i--;
+    }
+
+    while (i < 5){
+        resultBuf[j] = buf[i];
+        j++;
+        i++;
+    }
+
+    resultBuf[j] = '\0';
+
+    fbText(framebuffer, x, y, resultBuf);
+    return;
+
+}
+
 void fbHLine(uint8_t framebuffer[], uint8_t x, uint8_t y, uint8_t width, uint8_t color)
 {
     for (uint8_t i = 0; i < width; i++)

@@ -11,6 +11,7 @@
 void fbClear(uint8_t framebuffer[]);
 void fbSetPixel(uint8_t framebuffer[], uint8_t x, uint8_t y, uint8_t color);
 void fbText(uint8_t framebuffer[], uint8_t x, uint8_t y, char *text);
+void fbINum(uint8_t framebuffer[], uint8_t x, uint8_t y, uint16_t num);
 void fbHLine(uint8_t framebuffer[], uint8_t x, uint8_t y, uint8_t width, uint8_t color);
 void fbVLine(uint8_t framebuffer[], uint8_t x, uint8_t y, uint8_t height, uint8_t color);
 void fbRect(uint8_t framebuffer[], uint8_t x, uint8_t y, uint8_t width, uint8_t height);

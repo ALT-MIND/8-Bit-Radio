@@ -35,10 +35,9 @@
 #define RDA_RCLK_MODE 0x0800
 #define RDA_RCLK_DIRECT 0x0400
 
-#define RDA_SEEK_UP 0x0300
-#define RDA_SEEK_DOWN 0x0100
-
-#define RDA_SEEK_STOP 0xFCFF
+#define RDA_SEEK_UP 0x0200
+#define RDA_SEEK_DOWN 0xFDFF
+#define RDA_SEEK 0x0100
 
 #define RDA_SEEK_WRAP 0x0080
 #define RDA_SEEK_NOWRAP 0xFF7F
@@ -65,6 +64,11 @@
 #define RDA_TUNE_ON 0x0010
 #define RDA_TUNE_OFF 0xFFEF
 
+/* Register 0x0A */
+
+#define RDA_STC_FLAG 0x4000
+#define RDA_SF_FLAG 0x2000
+
 /*` Register 0x05 */
 #define RDA_VOLUME_CLEAR 0xfff0
 
@@ -74,7 +78,7 @@
 #define RDA_DEFAULT_REG02 0x0000
 
 // Register 0x03
-#define RDA_DEFAULT_REG03 0x4FC0
+#define RDA_DEFAULT_REG03 0x1C80 // 98.4 MHz
 
 // Register 0x05
 #define RDA_DEFAULT_REG05 0x888B

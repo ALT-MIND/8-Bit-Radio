@@ -3,11 +3,11 @@
 typedef enum btn_state_t
 {
     NONE,
+    UP,
     DOWN,
     LEFT,
     RIGHT,
     CENTER,
-    UP,
     SET,
     RESET
 } BTN_STATE;

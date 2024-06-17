@@ -120,10 +120,9 @@ I2C_ERROR initRDA5807M(rda5807m_word* initReg)
 {
 
     I2C_ERROR operationStasus = SUCCESS;
-
-    initReg->raw = RDA_DEFAULT_REG02;
     initReg->raw |= RDA_DHIZ;
     initReg->raw |= RDA_MONO_ON;
+    initReg->raw |= RDA_MUTE;
     initReg->raw |= RDA_POWER;
 
     operationStasus = writeRDARegister(REG02, initReg);
